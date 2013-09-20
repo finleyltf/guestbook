@@ -1,0 +1,98 @@
+<?php
+$title = "Edit a post";
+$this->headTitle($title);
+?>
+
+<?php
+
+// test
+
+//$form = new \Zend\Form\Form();
+//$form->get('string')->get
+
+
+// end of test
+
+
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', $this->url('post', array('action' => 'editpost', 'id' => $this->id)));
+$form->setAttribute('method', 'post');
+$form->setAttribute('class', 'form-horizontal');
+?>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2"></div>
+        <div class="span9">
+
+            <!--<form class="form-horizontal">-->
+            <?php echo $this->form()->openTag($form); ?>
+            <fieldset>
+                <legend>Edit a Post</legend>
+
+
+                <!-- hidden id-->
+                <?php echo $this->formElement($form->get('id')) ?>
+
+
+                <!-- input Text -->
+                <div class="control-group">
+                    <label class="control-label"><?= $form->get('guest_name')->getOption('label') ?></label>
+
+                    <div class="controls">
+                        <!--    <input type="text" id="inputEmail" placeholder="Email">-->
+                        <?php echo $this->formElement($form->get('guest_name')) ?>
+                    </div>
+                </div>
+
+
+                <!-- Textarea -->
+                <div class="control-group">
+                    <label class="control-label">Subject</label>
+
+                    <div class="controls">
+                        <?php /*$form->get('subject')->setAttribute('rows', 3) */ ?>
+                        <?php echo $this->formElement($form->get('subject')) ?>
+                    </div>
+                </div>
+
+
+                <!-- Rating?? -->
+                <div class="control-group">
+                    <label class="control-label">Rating</label>
+
+                    <div class="controls">
+                        <?php /*echo $this->get('rating')->setOptions('empty_option', $form->get('rating'))->getValue() */?>
+                        <?php echo $this->formElement($form->get('rating')) ?>
+                    </div>
+                </div>
+
+
+                <!-- Textarea -->
+                <div class="control-group">
+                    <label class="control-label">Review</label>
+
+                    <div class="controls">
+                        <?php /*$form->get('subject')->setAttribute('rows', 10, 'cols', 30) */ ?>
+                        <?php $form->get('review')->setAttribute('class', 'input-xlarge') ?>
+                        <?php echo $this->formElement($form->get('review')) ?>
+                    </div>
+                </div>
+
+
+                <!-- Button -->
+                <div class="control-group">
+                    <label class="control-label"></label>
+
+                    <div class="controls">
+                        <?php $form->get('send')->setAttribute('class', 'btn btn-info') ?>
+                        <?php echo $this->formElement($form->get('send')) ?>
+                    </div>
+                </div>
+
+            </fieldset>
+            <?php echo $this->form()->closeTag(); ?>
+            <!--</form>-->
+        </div>
+    </div>
+</div>

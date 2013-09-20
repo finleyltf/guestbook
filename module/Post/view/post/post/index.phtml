@@ -1,0 +1,65 @@
+<?php
+$title = 'Welcome to the Guestbook!';
+$this->headTitle($title);
+?>
+<!--<h2>--><?php //echo $this->escapeHtml($title); ?><!--</h2>-->
+<h2><?php echo $title; ?></h2>
+
+<hr>
+<div>
+    <p>
+        <a href="<?= $this->url('post', array('action' => 'addpost')) ?>">Write a Post</a>
+    </p>
+</div>
+<hr>
+
+<div class='guestbook-container'>
+    <?php foreach ($posts as $post): ?>
+        <div class="post">
+            <div class="post-header">
+                <div class="row">
+                    <div class="span2">
+                        <a href="<?= $this->url('post', array('action' => 'editpost', 'id' => $post->id)) ?>">
+                            <?= $post->guest_name ?>
+                        </a>
+                    </div>
+                    <div class="span2">
+                        posted @ <?php echo $post->date->format('Y-m-d'); ?>
+                    </div>
+                    <div class="span1">
+                        <a href="<?= $this->url('post', array('action' => 'editpost', 'id' => $post->id)) ?>">
+                            Edit
+                        </a>
+                    </div>
+                    <div class="span1">
+                        <a href="<?= $this->url('post', array('action' => 'deletepost', 'id' => $post->id)) ?>">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span4"><h5><?php echo $post->subject ?></h5></div>
+                </div>
+                <div class="row">
+                    <div class="span2 rating">
+                        <?php for ($n = 1; $n <= (int)$post->rating; $n++) : ?>
+                            <img src="<?= $this->basePath() . '/img/glyphicons_049_star.png' ?>" height="15" width="15">
+                        <?php endfor; ?>
+                        <?php for ($m = 1; $m <= 6 - $n; $m++) : ?>
+                            <img src="<?= $this->basePath() . '/img/glyphicons_048_dislikes.png' ?>" height="15"
+                                 width="15">
+                        <?php endfor; ?>
+                    </div>
+                </div>
+            </div>
+            <div class="post-content">
+                <div class="row">
+                    <div class="review span6">
+                        <p><?php echo $post->review ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    <?php endforeach; ?>
+</div>
