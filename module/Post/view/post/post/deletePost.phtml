@@ -6,37 +6,68 @@ $this->headTitle($title);
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span2"></div>
-        <div class="span9">
+        <div class="span10">
 
-            <form class="form-horizontal" action="<?=
-            $this->url('post', array(
-                'action' => 'deletepost',
-                'id'     => $this->id,
-            )) ?>" method="post">
 
-                <fieldset>
-                    <legend>Delete a Post</legend>
+            <div class="row-fluid">
 
-                    <div class="control-group">
-                        <label class="control-label"></label>
+                <form class="form-horizontal" action="<?=
+                $this->url('post', array(
+                    'action' => 'deletepost',
+                    'id'     => $this->id,
+                )) ?>" method="post">
 
-                        <div class="controls">
-                            <p>Are you sure that you want to delete [ <?= $post->guest_name ?> ]'s post?</p>
+                    <fieldset>
+
+
+                        <div>
+
+                            <div>
+                                <legend>Delete a Post</legend>
+                            </div>
+
+
+                            <div class="row-fluid">
+
+                                <!-- image -->
+                                <div class="span2">
+                                    <img src="<?= $this->basePath() . '/img/uploads/' . $post->image ?>"
+                                         class="img-circle" height="" width="">
+                                </div>
+
+
+                                <div class="span8">
+
+                                    <br>
+
+                                    <div class="row-fluid">
+                                        <blockquote>
+                                            <p>Are you sure that you want to delete [ <?= $post->guest_name ?> ]'s
+                                                post?</p>
+                                        </blockquote>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row-fluid">
+                                        <button type="submit" name="del" value="Yes" class="btn btn-danger">YES</button>
+                                        <button type="submit" name="del" value="No" class="btn btn-inverse">NO</button>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
                         </div>
-                    </div>
 
-                    <div class="control-group">
-                        <label class="control-label"></label>
+                    </fieldset>
 
-                        <div class="controls">
-                            <button type="submit" name="del" value="Yes" class="btn btn-danger">YES</button>
-                            <button type="submit" name="del" value="No" class="btn btn-inverse">NO</button>
-                        </div>
-                    </div>
 
-                </fieldset>
+                </form>
 
-            </form>
+            </div>
+
         </div>
     </div>
 </div>

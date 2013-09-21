@@ -10,7 +10,7 @@ class PostForm extends Form
     {
         parent::__construct('post');
         $this->setAttribute('method', 'post');
-
+        $this->setAttribute('enctype','multipart/form-data'); // add this line if upload is needed!!!
         /**
          * Post form
          *
@@ -109,7 +109,7 @@ class PostForm extends Form
         ));
 
         $this->add(array(
-           'name' => 'image-File',
+           'name' => 'image',
             'type' => 'File',
 
         ));

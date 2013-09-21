@@ -17,7 +17,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @property string   $guest_name
  * @property datetime $date
  * @property string   $subject
- * @property text   $review
+ * @property text     $review
  * @property string   $rating
  *
  */
@@ -61,6 +61,12 @@ class Post implements InputFilterAwareInterface
      * @ORM\Column(type="string")
      */
     protected $rating;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $image;
+
 
     /**
      * @param mixed $date
@@ -159,6 +165,23 @@ class Post implements InputFilterAwareInterface
     }
 
     /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+
+    /**
      * Magic getter to expose protected properties.
      *
      * @param string $property
@@ -204,6 +227,7 @@ class Post implements InputFilterAwareInterface
         $this->subject    = $data['subject'];
         $this->review     = $data['review'];
         $this->rating     = $data['rating'];
+        $this->image      = $data['image']; // ?? 上传图片，存图片名到数据库，这里是否需要？
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter)

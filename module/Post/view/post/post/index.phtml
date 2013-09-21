@@ -2,64 +2,153 @@
 $title = 'Welcome to the Guestbook!';
 $this->headTitle($title);
 ?>
-<!--<h2>--><?php //echo $this->escapeHtml($title); ?><!--</h2>-->
-<h2><?php echo $title; ?></h2>
 
-<hr>
-<div>
-    <p>
-        <a href="<?= $this->url('post', array('action' => 'addpost')) ?>">Write a Post</a>
-    </p>
-</div>
-<hr>
+<div class="container-fluid">
 
-<div class='guestbook-container'>
-    <?php foreach ($posts as $post): ?>
-        <div class="post">
-            <div class="post-header">
-                <div class="row">
-                    <div class="span2">
-                        <a href="<?= $this->url('post', array('action' => 'editpost', 'id' => $post->id)) ?>">
-                            <?= $post->guest_name ?>
-                        </a>
+    <div class="row-fluid">
+
+        <div class="span12">
+            <!--<h2>--><?php //echo $this->escapeHtml($title); ?><!--</h2>-->
+            <h2><?php echo $title; ?></h2>
+
+            <hr>
+            <div>
+                <p>
+                    <a href="<?= $this->url('post', array('action' => 'addpost')) ?>"> <i class="icon-pencil"></i> Write</a>
+                </p>
+            </div>
+            <hr>
+
+
+            <div class="row-fluid">
+                <div class="span12">
+
+
+                    <!-- guestbook -->
+                    <div class="row-fluid">
+                        <div class="span12">
+
+                            <?php foreach ($posts as $post): ?>
+                                <div class="row-fluid post">
+                                    <div class="span12">
+
+
+                                        <!-- header of the post: include guest_name, post date, edit & delete link, subject, rating -->
+                                        <div class="row-fluid post-header">
+
+                                            <div class="span12">
+
+                                                <div class="row-fluid">
+
+                                                    <!-- image -->
+                                                    <div class="span1">
+                                                        <img
+                                                            src="<?= $this->basePath() . '/img/uploads/' . $post->image ?>"
+                                                            class="img-circle" height=""
+                                                            width=""> <!-- 这里还可以用width手动控制大小 height不行 -->
+                                                    </div>
+
+
+                                                    <div class="span11">
+                                                        <div class="row-fluid">
+
+                                                            <!-- guest_name -->
+                                                            <div class="span2">
+                                                                <a href="<?= $this->url('post', array('action' => 'editpost', 'id' => $post->id)) ?>">
+                                                                    <?= $post->guest_name ?>
+                                                                </a>
+                                                            </div>
+
+                                                            <!-- post date -->
+                                                            <div class="span2">
+                                                                posted @ <?php echo $post->date->format('Y-m-d'); ?>
+                                                            </div>
+
+                                                            <!-- edit & delete link -->
+                                                            <div class="span4">
+
+                                                                <div>
+                                                                    <a href="<?= $this->url('post', array('action' => 'editpost', 'id' => $post->id)) ?>"
+                                                                       class="btn btn-small btn-primary">
+                                                                        Edit
+                                                                    </a>
+
+                                                                    <a href="<?= $this->url('post', array('action' => 'deletepost', 'id' => $post->id)) ?>"
+                                                                       class="btn btn-small btn-danger">
+                                                                        Delete
+                                                                    </a>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- subject -->
+                                                        <div class="row-fluid">
+
+                                                            <div class="span8">
+                                                                <p><strong><?php echo $post->subject ?></strong></p>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- rating -->
+                                                        <div class="row-fluid">
+                                                            <div class="span2 rating">
+                                                                <?php for ($n = 1; $n <= (int)$post->rating; $n++) : ?>
+                                                                    <img
+                                                                        src="<?= $this->basePath() . '/img/glyphicons_049_star.png' ?>"
+                                                                        height="15"
+                                                                        width="15">
+                                                                <?php endfor; ?>
+                                                                <?php for ($m = 1; $m <= 6 - $n; $m++) : ?>
+                                                                    <img
+                                                                        src="<?= $this->basePath() . '/img/glyphicons_048_dislikes.png' ?>"
+                                                                        height="15"
+                                                                        width="15">
+                                                                <?php endfor; ?>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <!-- content of the post: mainly review of the post -->
+                                        <div class="row-fluid post-content">
+                                            <br>
+
+                                            <div class="row-fluid">
+                                                <div class="review span6">
+                                                    <blockquote>
+                                                        <p class=""><?php echo $post->review ?></p>
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <hr>
+                            <?php endforeach; ?>
+
+                        </div>
                     </div>
-                    <div class="span2">
-                        posted @ <?php echo $post->date->format('Y-m-d'); ?>
-                    </div>
-                    <div class="span1">
-                        <a href="<?= $this->url('post', array('action' => 'editpost', 'id' => $post->id)) ?>">
-                            Edit
-                        </a>
-                    </div>
-                    <div class="span1">
-                        <a href="<?= $this->url('post', array('action' => 'deletepost', 'id' => $post->id)) ?>">
-                            Delete
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="span4"><h5><?php echo $post->subject ?></h5></div>
-                </div>
-                <div class="row">
-                    <div class="span2 rating">
-                        <?php for ($n = 1; $n <= (int)$post->rating; $n++) : ?>
-                            <img src="<?= $this->basePath() . '/img/glyphicons_049_star.png' ?>" height="15" width="15">
-                        <?php endfor; ?>
-                        <?php for ($m = 1; $m <= 6 - $n; $m++) : ?>
-                            <img src="<?= $this->basePath() . '/img/glyphicons_048_dislikes.png' ?>" height="15"
-                                 width="15">
-                        <?php endfor; ?>
-                    </div>
+
+
                 </div>
             </div>
-            <div class="post-content">
-                <div class="row">
-                    <div class="review span6">
-                        <p><?php echo $post->review ?></p>
-                    </div>
-                </div>
-            </div>
+
+
         </div>
-        <hr>
-    <?php endforeach; ?>
+
+    </div>
+
 </div>

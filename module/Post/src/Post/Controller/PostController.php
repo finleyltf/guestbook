@@ -12,6 +12,9 @@ use Post\Form\PostForm;
 use Doctrine\ORM\EntityManager;
 use Zend\Filter\FilterChain;
 
+use Zend\Validator\File\Size;
+use Zend\File\Transfer\Adapter\Http as FileTransferAdapter;
+
 class PostController extends AbstractActionController
 {
 
@@ -52,21 +55,36 @@ class PostController extends AbstractActionController
         $form = new PostForm();
         $form->get('send')->setValue('Add');
 
+
         // if $request isPost(), create Post instance, set the InputFilter,
         $request = $this->getRequest();
         if ($request->isPost()) {
             $post = new Post();
             $form->setInputFilter($post->getInputFilter()); // ??
 
-//            echo '<pre />';
-//            var_dump($request->getPost());
+            $data = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
 
-            $form->setData($request->getPost());
+            $form->setData($data);
 
             // if $form isValid() true, post instance would grab data from the form, put into database
             if ($form->isValid()) {
+
+                // form is valid, upload image file to directory desired by \Zend\File\Transfer\Adapter\Http component,
+                // and add validation like file size to validate maximal file size
+                $file = $this->params()->fromFiles('image');
+                $this->validatedUpload($file, $form);
+
+
                 $post->populate($form->getData());
-                $post->setDate(date_create()); //??? timezone??
+                $post->setDate(date_create()); // timezone : ok
+
+
+                // set the name of the uploaded file to the image
+                $post->setImage($post->image['name']);
+
 
                 $this->getEntityManager()->persist($post);
                 $this->getEntityManager()->flush();
@@ -96,6 +114,7 @@ class PostController extends AbstractActionController
         }
 
         $createDate = $post->getDate();
+        $imageFileName = $post->getImage();
 
         // bind to form
         $form = new PostForm();
@@ -117,6 +136,8 @@ class PostController extends AbstractActionController
                  */
 //                $form->bindValues();  // isValid中有bindValues()动作，所以这里可以去掉
                 $post->setDate($createDate);
+                $post->setImage($imageFileName);
+
                 $this->getEntityManager()->flush();
 
                 // after save the edit, redirect to module index
@@ -172,5 +193,43 @@ class PostController extends AbstractActionController
 
     }
 
+
+    public function validatedUpload($file, $form)
+    {
+
+        $size = new Size(array('max' => 10000000)); // maximum bytes filesize
+
+        $adapter = new FileTransferAdapter();
+
+        // validation can be more than one ...
+        $adapter->setValidators(array($size), $file['name']);
+
+        if (!$adapter->isValid()) {
+            $dataError = $adapter->getMessages();
+            $error     = array();
+            foreach ($dataError as $key => $row) {
+                $error[] = $row;
+            } //set formElementErrors
+            $form->setMessages(array('image' => $error));
+        } else {
+            // valid, lets do upload here
+            $adapter->setDestination(getcwd() . '/public/img/uploads'); // getcwd() get the current working directory
+//            $adapter->setDestination(dirname(__DIR__) . '/assets');
+
+//            echo '<pre>';
+//            var_dump(move_uploaded_file($file['tmp_name'], $adapter->getDestination()));
+//            var_dump($adapter->getFileInfo($file['name']));
+//            echo '</pre>';
+
+
+            if ($adapter->receive($file['name'])) {
+                return;
+            } else {
+                throw new \Exception ('upload failed!!!');
+            }
+
+        }
+
+    }
 
 }
