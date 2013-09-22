@@ -9,6 +9,8 @@ return array(
         'Post', // <-- Add this line
     ),
 
+    'upload_dir' => __DIR__.'\../public/img/uploads',//添加代码 给upload文件夹可写权限
+
     // These are various options for the listeners attached to the ModuleManager
     'module_listener_options' => array(
         // This should be an array of paths in which modules reside.

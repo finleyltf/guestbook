@@ -223,7 +223,7 @@ class PostController extends AbstractActionController
 
 
             if ($adapter->receive($file['name'])) {
-                return;
+                chmod($adapter->getDestination() . '/' .$file['name'], 0755);
             } else {
                 throw new \Exception ('upload failed!!!');
             }
